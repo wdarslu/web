@@ -263,707 +263,386 @@
         <!-- 向下滚动提示 -->
         <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
             <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
-            </svg>
-        </div>
-    </section>
-
-    <!-- 我们的相册板块 -->
-    <section id="album" class="relative py-16 px-4 min-h-screen">
-        <!-- 背景图 -->
-        <div class="absolute inset-0 w-full h-full">
-            <img 
-                src="images/photo.jpg" 
-                alt="相册背景" 
-                class="w-full h-full object-cover"
-            >
-            <!-- 半透明遮罩，保证文字清晰 -->
-            <div class="absolute inset-0 bg-black/40"></div>
-        </div>
-
-        <!-- 相册内容 -->
-        <div class="relative z-10 max-w-7xl mx-auto">
-            <h2 class="text-4xl font-bold text-center mb-12 text-white drop-shadow-lg">我们的相册</h2>
-            
-            <!-- 相册网格 -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                <!-- 照片将通过JavaScript动态添加到这里 -->
+                <path stroke-linecap="round" stroke-linejoin="round"<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>共享小屋</title>
+    <!-- Tailwind CSS v3 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- AOS 动画库 -->
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <!-- Netlify Identity -->
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#FF7A00',
+                        secondary: '#0066CC',
+                        dark: '#333333',
+                        light: '#FFFFFF'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .text-shadow {
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            }
+            .transition-all-300 {
+                transition: all 0.3s ease;
+            }
+        }
+        
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+        }
+        
+        .hero-section {
+            background-color: #FFFFFF;
+        }
+        
+        .login-section {
+            background-color: #FFFFFF;
+        }
+        
+        .form-input {
+            transition: all 0.3s ease;
+        }
+        
+        .form-input:focus {
+            border-color: #0066CC;
+            box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.2);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #0066CC 0%, #0080FF 100%);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 102, 204, 0.3);
+        }
+        
+        .btn-secondary {
+            background-color: transparent;
+            border: 2px solid #FFFFFF;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .star-trail {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            color: #FFD700;
+            font-size: 16px;
+            opacity: 0.6;
+            animation: fadeOut 1.5s ease-out forwards;
+        }
+        
+        @keyframes fadeOut {
+            0% {
+                opacity: 1;
+                transform: scale(1) rotate(0deg);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(0.5) rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div id="welcome-page" class="min-h-screen flex flex-col">
+        <div class="hero-section flex-1 flex flex-col md:flex-row">
+            <div class="w-full md:w-1/2 flex items-center justify-center p-8">
+                <div class="text-center md:text-left px-4" data-aos="fade-right" data-aos-duration="1000">
+                    <h1 class="text-[clamp(1.8rem,5vw,3rem)] font-bold text-dark mb-8 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-400">欢迎来到共享小屋</h1>
+                    <div class="flex justify-center">
+                        <button id="login-btn" class="btn-primary text-white font-semibold py-3 px-8 rounded-full text-lg">登录</button>
+                    </div>
+                </div>
+            </div>
+            <div class="w-full md:w-1/2 flex items-center justify-center p-4">
+                <div class="w-full h-full flex items-center justify-center" data-aos="fade-left" data-aos-duration="1000">
+                    <img src="https://p3-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/32c68defa39e4766bfd999113db11050.png~tplv-a9rns2rl98-24:720:720.png?lk3s=8e244e95&rcl=202604091001340F1BAFC1BF49490A439B&rrcfp=8a172a1a&x-expires=1776304894&x-signature=RaHIgQDRfZ%2BF0ij7saidCxiBtg0%3D" alt="欢迎图片" class="max-w-full max-h-[80vh] object-contain">
+                </div>
             </div>
         </div>
-    </section>
+    </div>
 
-    <!-- 资料存储地板块 -->
-    <section id="storage" class="relative py-16 px-4 min-h-screen">
-        <!-- 背景图 -->
-        <div class="absolute inset-0 w-full h-full">
-            <img 
-                src="images/seaa.jpg" 
-                alt="资料存储地背景" 
-                class="w-full h-full object-cover"
-            >
-            <!-- 半透明遮罩，保证文字清晰 -->
-            <div class="absolute inset-0 bg-black/40"></div>
-        </div>
-
-        <!-- 板块内容 -->
-        <div class="relative z-10 max-w-7xl mx-auto">
-            <h2 class="text-4xl font-bold text-center mb-12 text-white drop-shadow-lg">资料存储地</h2>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- 网站存储地 -->
-                <div class="bg-white/10 backdrop-blur-sm rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow cursor-pointer" id="website-storage">
-                    <h3 class="text-xl font-semibold mb-3 text-white">网站存储地</h3>
-                    <p class="text-white/80">点击添加或删除网站</p>
-                </div>
-                
-                <!-- 悄悄话专区 -->
-                <div class="bg-white/10 backdrop-blur-sm rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow cursor-pointer" id="secret-chat">
-                    <h3 class="text-xl font-semibold mb-3 text-white">悄悄话专区</h3>
-                    <p class="text-white/80">点击进入对话</p>
-                </div>
-                
-                <!-- 实验区 -->
-                <div class="bg-white/10 backdrop-blur-sm rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow cursor-pointer" id="experiment-area">
-                    <h3 class="text-xl font-semibold mb-3 text-white">实验区</h3>
-                    <p class="text-white/80">点击进入实验区</p>
+    <div id="success-page" class="min-h-screen bg-gray-100 hidden">
+        <nav class="fixed top-0 left-0 w-full bg-white/95 backdrop-blur-md shadow-sm z-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-16">
+                    <div class="flex items-center">
+                        <span class="text-2xl font-bold text-green-700">个人中心</span>
+                    </div>
+                    <div class="hidden md:flex space-x-8">
+                        <a href="#hero" class="text-gray-700 hover:text-green-600 font-medium">首页</a>
+                        <a href="#album" class="text-gray-700 hover:text-green-600 font-medium">我们的相册</a>
+                        <a href="#storage" class="text-gray-700 hover:text-green-600 font-medium">资料存储地</a>
+                    </div>
+                    <button id="logout-btn" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">退出登录</button>
                 </div>
             </div>
-        </div>
-    </section>
-</div>
+        </nav>
+
+        <section id="hero" class="relative min-h-screen flex items-center justify-center pt-16">
+            <div class="absolute inset-0 w-full h-full">
+                <img src="images/sea.jpg" alt="锦鲤的大海" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-black/30"></div>
+            </div>
+            <div class="relative z-10 text-center text-white px-4">
+                <h1 class="text-5xl md:text-7xl font-bold mb-6 drop-shadow-lg">锦鲤的大海</h1>
+                <p class="text-2xl md:text-3xl font-medium drop-shadow-md">人生是大海，不是鱼塘</p>
+            </div>
+            <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                </svg>
+            </div>
+        </section>
+
+        <section id="album" class="relative py-16 px-4 min-h-screen">
+            <div class="absolute inset-0 w-full h-full">
+                <img src="images/photo.jpg" alt="相册背景" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-black/40"></div>
+            </div>
+            <div class="relative z-10 max-w-7xl mx-auto">
+                <h2 class="text-4xl font-bold text-center mb-12 text-white drop-shadow-lg">我们的相册</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8"></div>
+            </div>
+        </section>
+
+        <section id="storage" class="relative py-16 px-4 min-h-screen">
+            <div class="absolute inset-0 w-full h-full">
+                <img src="images/seaa.jpg" alt="资料存储地背景" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-black/40"></div>
+            </div>
+            <div class="relative z-10 max-w-7xl mx-auto">
+                <h2 class="text-4xl font-bold text-center mb-12 text-white drop-shadow-lg">资料存储地</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="bg-white/10 backdrop-blur-sm rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow cursor-pointer" id="website-storage">
+                        <h3 class="text-xl font-semibold mb-3 text-white">网站存储地</h3>
+                        <p class="text-white/80">点击添加或删除网站</p>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur-sm rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow cursor-pointer" id="secret-chat">
+                        <h3 class="text-xl font-semibold mb-3 text-white">悄悄话专区</h3>
+                        <p class="text-white/80">点击进入对话</p>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur-sm rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow cursor-pointer" id="experiment-area">
+                        <h3 class="text-xl font-semibold mb-3 text-white">实验区</h3>
+                        <p class="text-white/80">点击进入实验区</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
 
     <script>
-        // 初始化AOS动画库
-        document.addEventListener('DOMContentLoaded', function() {
+        let globalData = { photos: [], websites: [], messages: [] };
+        let fileSha = null;
+
+        async function loadCloudData() {
+            try {
+                const res = await fetch("/shared_data.json");
+                if (res.ok) {
+                    const data = await res.json();
+                    globalData = data.data || { photos: [], websites: [], messages: [] };
+                    fileSha = data.sha || null;
+                }
+            } catch (e) {}
+            renderAll();
+        }
+
+        async function saveCloudData() {
+            const user = netlifyIdentity.currentUser();
+            if (!user) { alert("请先登录"); return; }
+
+            const dataToSave = { data: globalData, sha: fileSha };
+            const content = btoa(unescape(encodeURIComponent(JSON.stringify(dataToSave, null, 2))));
+
+            const body = { message: "更新共享数据", content: content };
+            if (fileSha) body.sha = fileSha;
+
+            const res = await fetch("/.netlify/git/github/contents/shared_data.json", {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(body)
+            });
+
+            if (res.ok) {
+                const result = await res.json();
+                fileSha = result.content.sha;
+                alert("已同步到所有设备！");
+            }
+        }
+
+        function renderAll() {
+            renderPhotos();
+        }
+
+        // 初始化
+        netlifyIdentity.init();
+        document.addEventListener('DOMContentLoaded', () => {
             AOS.init();
-            
-            // 鼠标尾迹效果
-            const starSymbols = ['★', '☆', '✦', '✧', '✫', '✬'];
-            let mouseX = 0, mouseY = 0;
-            let trailInterval;
-            
-            // 监听鼠标移动
-            document.addEventListener('mousemove', function(e) {
-                mouseX = e.clientX;
-                mouseY = e.clientY;
-                
-                // 如果没有活动的定时器，则创建新的定时器
-                if (!trailInterval) {
-                    trailInterval = setInterval(createStar, 30);
-                }
+            loadCloudData();
+
+            document.getElementById('login-btn').onclick = () => netlifyIdentity.open();
+            document.getElementById('logout-btn').onclick = () => {
+                netlifyIdentity.logout();
+                document.getElementById('success-page').classList.add('hidden');
+                document.getElementById('welcome-page').classList.remove('hidden');
+            };
+
+            netlifyIdentity.on('login', () => {
+                document.getElementById('welcome-page').classList.add('hidden');
+                document.getElementById('success-page').classList.remove('hidden');
+                loadCloudData();
             });
-            
-            // 监听鼠标停止移动
-            let mouseTimeout;
-            document.addEventListener('mousemove', function() {
-                // 清除之前的超时定时器
-                clearTimeout(mouseTimeout);
-                
-                // 设置新的超时定时器，30毫秒后如果没有新的鼠标移动，则停止生成星星
-                mouseTimeout = setTimeout(function() {
-                    if (trailInterval) {
-                        clearInterval(trailInterval);
-                        trailInterval = null;
-                    }
-                }, 30);
-            });
-            
-            // 创建星星元素
-            function createStar() {
-                const star = document.createElement('div');
-                star.className = 'star-trail';
-                star.textContent = starSymbols[Math.floor(Math.random() * starSymbols.length)];
-                
-                // 随机大小
-                const size = Math.floor(Math.random() * 10) + 20;
-                star.style.fontSize = size + 'px';
-                
-                // 随机颜色 - 使用HSL颜色空间生成更丰富的随机颜色
-                const hue = Math.floor(Math.random() * 360); // 0-360的色相值
-                const saturation = Math.floor(Math.random() * 50) + 50; // 50-100的饱和度
-                const lightness = Math.floor(Math.random() * 30) + 60; // 60-90的亮度
-                star.style.color = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
-                
-                // 定位到鼠标位置
-                star.style.left = mouseX + 'px';
-                star.style.top = mouseY + 'px';
-                
-                // 添加到文档中
-                document.body.appendChild(star);
-                
-                // 动画结束后移除元素
-                setTimeout(() => {
-                    star.remove();
-                }, 1500);
-            }
-            
-            // 鼠标停止移动时停止生成星星
-            document.addEventListener('mouseleave', function() {
-                if (trailInterval) {
-                    clearInterval(trailInterval);
-                }
-            });
-            
-            const welcomePage = document.getElementById('welcome-page');
-            const loginPage = document.getElementById('login-page');
-            const successPage = document.getElementById('success-page');
-            const loginBtn = document.getElementById('login-btn');
-            const backBtn = document.getElementById('back-btn');
-            const logoutBtn = document.getElementById('logout-btn');
-            const loginForm = document.getElementById('login-form');
-            const errorMessage = document.getElementById('error-message');
-            
-            // 数字验证相关变量
-            let num1, num2, correctAnswer;
-            
-            // 生成随机数字验证题
-            function generateVerification() {
-                num1 = Math.floor(Math.random() * 50) + 1; // 1-50的随机数
-                num2 = Math.floor(Math.random() * 50) + 1; // 1-50的随机数
-                correctAnswer = num1 + num2;
-                
-                document.getElementById('num1').textContent = num1;
-                document.getElementById('num2').textContent = num2;
-                document.getElementById('verification-answer').value = '';
-                document.getElementById('verification-error').classList.add('hidden');
-            }
-            
-            // 显示数字验证弹窗
-            function showVerificationModal() {
-                generateVerification();
-                document.getElementById('verification-modal').classList.remove('hidden');
-            }
-            
-            // 隐藏数字验证弹窗
-            function hideVerificationModal() {
-                document.getElementById('verification-modal').classList.add('hidden');
-            }
-            
-            // 点击欢迎页面的登录按钮，直接跳转到登录页面
-            loginBtn.addEventListener('click', function() {
-                welcomePage.classList.add('hidden');
-                loginPage.classList.remove('hidden');
-                loginPage.classList.add('flex');
-            });
-            
-            // 点击返回按钮，回到欢迎页面
-            backBtn.addEventListener('click', function() {
-                loginPage.classList.add('hidden');
-                loginPage.classList.remove('flex');
-                welcomePage.classList.remove('hidden');
-                errorMessage.classList.add('hidden');
-                loginForm.reset();
-            });
-            
-            // 点击取消验证按钮，关闭弹窗
-            document.getElementById('cancel-verification').addEventListener('click', function() {
-                hideVerificationModal();
-            });
-            
-            // 点击弹窗背景，关闭弹窗
-            document.getElementById('modal-overlay').addEventListener('click', function() {
-                hideVerificationModal();
-            });
-            
-            // 验证按钮点击事件
-            document.getElementById('verify-btn').addEventListener('click', function() {
-                const userAnswer = parseInt(document.getElementById('verification-answer').value);
-                const errorElement = document.getElementById('verification-error');
-                
-                if (isNaN(userAnswer)) {
-                    errorElement.textContent = '请输入有效的数字';
-                    errorElement.classList.remove('hidden');
-                    return;
-                }
-                
-                if (userAnswer === correctAnswer) {
-                    // 验证成功，跳转到成功页面
-                    hideVerificationModal();
-                    loginPage.classList.add('hidden');
-                    loginPage.classList.remove('flex');
-                    successPage.classList.remove('hidden');
-                } else {
-                    // 验证失败，显示错误信息
-                    errorElement.textContent = '答案错误，请重新计算';
-                    errorElement.classList.remove('hidden');
-                }
-            });
-            
-            // 点击退出登录按钮，回到欢迎页面
-            logoutBtn.addEventListener('click', function() {
-                successPage.classList.add('hidden');
-                welcomePage.classList.remove('hidden');
-            });
-            
-            // 忘记密码相关功能
-            const forgotPasswordLink = document.getElementById('forgot-password');
-            const confirmModal = document.getElementById('confirm-modal');
-            const phoneModal = document.getElementById('phone-modal');
-            const confirmBtn = document.getElementById('confirm-btn');
-            const cancelBtn = document.getElementById('cancel-btn');
-            const confirmOverlay = document.getElementById('confirm-overlay');
-            const phoneOverlay = document.getElementById('phone-overlay');
-            const countdownElement = document.getElementById('countdown');
-            let countdownTimer;
-            
-            // 显示确认弹窗
-            forgotPasswordLink.addEventListener('click', function(e) {
-                e.preventDefault();
-                confirmModal.classList.remove('hidden');
-            });
-            
-            // 点击确认按钮，显示电话号码弹窗
-            confirmBtn.addEventListener('click', function() {
-                confirmModal.classList.add('hidden');
-                showPhoneModal();
-            });
-            
-            // 点击取消按钮或弹窗背景，关闭确认弹窗
-            cancelBtn.addEventListener('click', function() {
-                confirmModal.classList.add('hidden');
-            });
-            
-            confirmOverlay.addEventListener('click', function() {
-                confirmModal.classList.add('hidden');
-            });
-            
-            // 显示电话号码弹窗并开始倒计时
-            function showPhoneModal() {
-                phoneModal.classList.remove('hidden');
-                let countdown = 10;
-                countdownElement.textContent = countdown;
-                
-                countdownTimer = setInterval(function() {
-                    countdown--;
-                    countdownElement.textContent = countdown;
-                    
-                    if (countdown <= 0) {
-                        clearInterval(countdownTimer);
-                        phoneModal.classList.add('hidden');
-                    }
-                }, 1000);
-            }
-            
-            // 点击弹窗背景，关闭电话号码弹窗
-            phoneOverlay.addEventListener('click', function() {
-                clearInterval(countdownTimer);
-                phoneModal.classList.add('hidden');
-            });
-            
-            // 登录表单提交
-            loginForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                const username = document.getElementById('username').value;
-                const password = document.getElementById('password').value;
-                
-                // 验证账号密码
-                if (username === 'clzandly' && password === '005216') {
-                    // 账号密码正确，显示数字验证弹窗
-                    showVerificationModal();
-                    errorMessage.classList.add('hidden');
-                } else {
-                    // 登录失败，显示错误信息
-                    errorMessage.textContent = '账号或密码错误，请重新输入';
-                    errorMessage.classList.remove('hidden');
-                }
-            });
-            
-            // 相册功能 - 使用localStorage存储照片数据
-            let photos = JSON.parse(localStorage.getItem('albumPhotos')) || [
-                'https://p9-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/6a6821d2c6764015a65911a926558c9a.png~tplv-a9rns2rl98-24:720:720.png?lk3s=8e244e95&rcl=202604091001340F1BAFC1BF49490A439B&rrcfp=8a172a1a&x-expires=1776304895&x-signature=qD54%2Bj0B%2B0B%2B8B%2F1B%2F2B%2F3B%2F4B%2F5B%2F6B%2F7B%2F8B%2F9B%2FA',
-                'https://p3-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/32c68defa39e4766bfd999113db11050.png~tplv-a9rns2rl98-24:720:720.png?lk3s=8e244e95&rcl=202604091001340F1BAFC1BF49490A439B&rrcfp=8a172a1a&x-expires=1776304894&x-signature=RaHIgQDRfZ%2BF0ij7saidCxiBtg0%3D',
-                'https://p26-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/e882f01bc6214478b16c4b6e864ca02a.jpg~tplv-a9rns2rl98-24:720:720.jpg?lk3s=8e244e95&rcl=20260409174732BC1671B1F0D173F65511&rrcfp=8a172a1a&x-expires=1776332852&x-signature=E4JQXLW0M9wrWkD4JuiZvg176uM%3D'
-            ];
-            
-            // 保存照片数据到localStorage
-            function savePhotos() {
-                localStorage.setItem('albumPhotos', JSON.stringify(photos));
-            }
-            
-            const albumGrid = document.querySelector('#album .grid');
-            
-            // 渲染照片
-            function renderPhotos() {
-                albumGrid.innerHTML = '';
-                
-                // 只显示前4张照片
-                const displayPhotos = photos.slice(0, 4);
-                
-                displayPhotos.forEach((photo, index) => {
-                    const photoElement = document.createElement('div');
-                    photoElement.className = 'relative bg-white/10 backdrop-blur-sm rounded-lg overflow-hidden aspect-square';
-                    photoElement.draggable = true;
-                    photoElement.dataset.index = index;
-                    
-                    photoElement.innerHTML = `
-                        <img src="${photo}" alt="照片 ${index + 1}" class="w-full h-full object-contain">
-                        <div class="absolute inset-0 bg-black/0 hover:bg-black/30 transition-colors flex items-center justify-center opacity-0 hover:opacity-100">
-                            <button class="delete-photo-btn text-white bg-red-500/80 hover:bg-red-600 px-3 py-1 rounded-full mr-2">
+
+            // 相册渲染
+            window.renderPhotos = function() {
+                const grid = document.querySelector('#album .grid');
+                grid.innerHTML = '';
+                const photos = globalData.photos.slice(0,4);
+                photos.forEach((p,i) => {
+                    const el = document.createElement('div');
+                    el.className = 'relative bg-white/10 backdrop-blur-sm rounded-lg overflow-hidden aspect-square';
+                    el.innerHTML = `<img src="${p}" class="w-full h-full object-contain">
+                        <div class="absolute inset-0 bg-black/0 hover:bg-black/30 flex items-center justify-center opacity-0 hover:opacity-100">
+                            <button class="del-photo text-white bg-red-500/80 px-3 py-1 rounded-full mr-2">
                                 <i class="fa fa-trash"></i>
                             </button>
-                        </div>
-                    `;
-                    
-                    // 添加拖拽事件
-                    photoElement.addEventListener('dragstart', handleDragStart);
-                    photoElement.addEventListener('dragover', handleDragOver);
-                    photoElement.addEventListener('drop', handleDrop);
-                    
-                    // 添加删除事件
-                    photoElement.querySelector('.delete-photo-btn').addEventListener('click', () => {
-                        deletePhoto(index);
-                    });
-                    
-                    albumGrid.appendChild(photoElement);
+                        </div>`;
+                    el.querySelector('.del-photo').onclick = async () => {
+                        globalData.photos.splice(i,1);
+                        await saveCloudData();
+                        renderPhotos();
+                    };
+                    grid.appendChild(el);
                 });
-                
-                // 添加照片按钮
-                const addPhotoBtn = document.createElement('div');
-                addPhotoBtn.className = 'bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center aspect-square cursor-pointer hover:bg-white/30 transition-colors';
-                addPhotoBtn.innerHTML = `
-                    <div class="text-center text-white">
-                        <i class="fa fa-plus text-4xl mb-2"></i>
-                        <p>添加照片</p>
-                    </div>
-                `;
-                
-                // 添加点击事件
-                addPhotoBtn.addEventListener('click', function() {
-                    // 创建相册弹窗
-                    const modal = document.createElement('div');
-                    modal.className = 'fixed inset-0 flex items-center justify-center z-50';
-                    modal.innerHTML = `
-                        <div class="absolute inset-0 bg-black/70" id="album-modal-overlay"></div>
-                        <div class="relative z-10 bg-white rounded-xl shadow-xl p-6 max-w-4xl w-full max-h-[80vh] overflow-y-auto">
-                            <div class="flex justify-between items-center mb-6">
-                                <h3 class="text-2xl font-bold">相册管理</h3>
-                                <button id="close-album-modal" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
-                            </div>
-                            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mb-6">
-                                ${photos.map((photo, index) => `
-                                    <div class="relative bg-gray-100 rounded-lg overflow-hidden aspect-square">
-                                        <img src="${photo}" alt="照片 ${index + 1}" class="w-full h-full object-cover">
-                                        <button class="absolute top-2 right-2 delete-photo-btn-modal text-white bg-red-500/80 hover:bg-red-600 p-2 rounded-full">
-                                            <i class="fa fa-trash"></i>
-                                        </button>
-                                    </div>
-                                `).join('')}
-                                <div class="bg-gray-100 rounded-lg flex items-center justify-center aspect-square cursor-pointer hover:bg-gray-200" id="add-new-photo">
-                                    <div class="text-center">
-                                        <i class="fa fa-plus text-4xl text-gray-400 mb-2"></i>
-                                        <p class="text-gray-500">添加照片</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                    
-                    document.body.appendChild(modal);
-                    
-                    // 关闭弹窗
-                    document.getElementById('album-modal-overlay').addEventListener('click', function() {
-                        modal.remove();
-                    });
-                    
-                    document.getElementById('close-album-modal').addEventListener('click', function() {
-                        modal.remove();
-                    });
-                    
-                    // 删除照片
-                    modal.querySelectorAll('.delete-photo-btn-modal').forEach((btn, index) => {
-                        btn.addEventListener('click', function() {
-                            photos.splice(index, 1);
-                            modal.remove();
-                            renderPhotos();
-                        });
-                    });
-                    
-                    // 添加新照片
-                    document.getElementById('add-new-photo').addEventListener('click', function() {
-                        const input = document.createElement('input');
-                        input.type = 'file';
-                        input.accept = 'image/*';
-                        input.onchange = function(e) {
-                            const file = e.target.files[0];
-                            if (file) {
-                                const reader = new FileReader();
-                                reader.onload = function(e) {
-                                    photos.push(e.target.result);
-                                    savePhotos();
-                                    renderPhotos();
-                                    modal.remove();
-                                };
-                                reader.readAsDataURL(file);
-                            }
-                        };
-                        input.click();
-                    });
-                });
-                
-                albumGrid.appendChild(addPhotoBtn);
-            }
-            
-            // 拖拽开始
-            let draggedIndex = null;
-            function handleDragStart(e) {
-                draggedIndex = parseInt(this.dataset.index);
-                this.classList.add('opacity-50');
-            }
-            
-            // 拖拽经过
-            function handleDragOver(e) {
-                e.preventDefault();
-                this.classList.add('ring-2', 'ring-white');
-            }
-            
-            // 拖拽释放
-            function handleDrop(e) {
-                e.preventDefault();
-                this.classList.remove('ring-2', 'ring-white');
-                const dropIndex = parseInt(this.dataset.index);
-                
-                if (draggedIndex !== dropIndex) {
-                    // 调整照片顺序
-                    const [draggedPhoto] = photos.splice(draggedIndex, 1);
-                    photos.splice(dropIndex, 0, draggedPhoto);
-                    savePhotos();
-                    renderPhotos();
-                }
-            }
-            
-            // 删除照片
-            function deletePhoto(index) {
-                photos.splice(index, 1);
-                savePhotos();
-                renderPhotos();
-            }
-            
 
-            
-            // 初始渲染照片
-            renderPhotos();
-            
-            // 平滑滚动到相册板块
-            document.querySelector('a[href="#album"]').addEventListener('click', function(e) {
-                e.preventDefault();
-                document.getElementById('album').scrollIntoView({ behavior: 'smooth' });
-            });
-            
-            // 平滑滚动到首页
-            document.querySelector('a[href="#hero"]').addEventListener('click', function(e) {
-                e.preventDefault();
-                document.getElementById('hero').scrollIntoView({ behavior: 'smooth' });
-            });
-            
-            // 平滑滚动到资料存储地
-            document.querySelector('a[href="#storage"]').addEventListener('click', function(e) {
-                e.preventDefault();
-                document.getElementById('storage').scrollIntoView({ behavior: 'smooth' });
-            });
-            
-            // 资料存储地功能
-            
-            // 1. 网站存储地
-            const websites = JSON.parse(localStorage.getItem('websites')) || [];
-            
-            function saveWebsites() {
-                localStorage.setItem('websites', JSON.stringify(websites));
-            }
-            
-            document.getElementById('website-storage').addEventListener('click', function() {
-                const modal = document.createElement('div');
-                modal.className = 'fixed inset-0 flex items-center justify-center z-50';
-                modal.innerHTML = `
-                    <div class="absolute inset-0 bg-black/70" id="website-modal-overlay"></div>
-                    <div class="relative z-10 bg-white rounded-xl shadow-xl p-6 max-w-4xl w-full max-h-[80vh] overflow-y-auto">
-                        <div class="flex justify-between items-center mb-6">
-                            <h3 class="text-2xl font-bold">网站存储地</h3>
-                            <button id="close-website-modal" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
-                        </div>
-                        <div class="mb-6">
-                            <input type="text" id="website-name" placeholder="网站名称" class="w-full px-4 py-2 border border-gray-300 rounded-lg mb-2">
-                            <input type="url" id="website-url" placeholder="网站地址" class="w-full px-4 py-2 border border-gray-300 rounded-lg">
-                            <button id="add-website" class="mt-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">添加网站</button>
-                        </div>
-                        <div id="websites-list" class="space-y-2">
-                            ${websites.map((website, index) => `
-                                <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
-                                    <div>
-                                        <h4 class="font-medium">${website.name}</h4>
-                                        <a href="${website.url}" target="_blank" class="text-blue-600 text-sm">${website.url}</a>
-                                    </div>
-                                    <button class="delete-website text-red-500 hover:text-red-700" data-index="${index}">
-                                        <i class="fa fa-trash"></i>
-                                    </button>
-                                </div>
-                            `).join('')}
-                        </div>
-                    </div>
-                `;
+                const add = document.createElement('div');
+                add.className = 'bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center aspect-square cursor-pointer text-white';
+                add.innerHTML = '<i class="fa fa-plus text-4xl"></i>';
+                add.onclick = () => {
+                    const input = document.createElement('input');
+                    input.type = 'file';
+                    input.accept = 'image/*';
+                    input.onchange = (e) => {
+                        const f = e.target.files[0];
+                        if (f) {
+                            const r = new FileReader();
+                            r.onload = async () => {
+                                globalData.photos.push(r.result);
+                                await saveCloudData();
+                                renderPhotos();
+                            };
+                            r.readAsDataURL(f);
+                        }
+                    };
+                    input.click();
+                };
+                grid.appendChild(add);
+            };
+
+            // 网站存储
+            document.getElementById('website-storage').onclick = () => {
+                const m = document.createElement('div');
+                m.className = 'fixed inset-0 z-50 flex items-center justify-center';
+                m.innerHTML = `<div class="absolute inset-0 bg-black/70" onclick="m.remove()"></div>
+                    <div class="relative z-10 bg-white p-6 rounded-xl w-full max-w-md">
+                        <h3 class="text-xl font-bold mb-4">网站存储地</h3>
+                        <input id="n" placeholder="名称" class="w-full border p-2 rounded mb-2">
+                        <input id="u" placeholder="网址" class="w-full border p-2 rounded mb-2">
+                        <button id="a" class="bg-blue-600 text-white px-4 py-2 rounded w-full">添加</button>
+                        <div class="mt-4 max-h-60 overflow-y-auto"></div>
+                    </div>`;
+                document.body.appendChild(m);
                 
-                document.body.appendChild(modal);
-                
-                // 关闭弹窗
-                document.getElementById('website-modal-overlay').addEventListener('click', function() {
-                    modal.remove();
+                const list = m.querySelector('.mt-4');
+                globalData.websites.forEach((w,i) => {
+                    const it = document.createElement('div');
+                    it.className = 'flex justify-between p-2 border-b';
+                    it.innerHTML = `<div><p class="font-medium">${w.name}</p><a href="${w.url}" target="_blank" class="text-blue-600 text-sm">打开</a></div>
+                        <button class="del text-red-500">删</button>`;
+                    it.querySelector('.del').onclick = async () => {
+                        globalData.websites.splice(i,1);
+                        await saveCloudData();
+                        m.remove();
+                    };
+                    list.appendChild(it);
                 });
                 
-                document.getElementById('close-website-modal').addEventListener('click', function() {
-                    modal.remove();
-                });
-                
-                // 添加网站
-                document.getElementById('add-website').addEventListener('click', function() {
-                    const name = document.getElementById('website-name').value;
-                    const url = document.getElementById('website-url').value;
-                    
-                    if (name && url) {
-                        websites.push({ name, url });
-                        saveWebsites();
-                        
-                        // 重新渲染网站列表
-                        const websitesList = document.getElementById('websites-list');
-                        websitesList.innerHTML += `
-                            <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
-                                <div>
-                                    <h4 class="font-medium">${name}</h4>
-                                    <a href="${url}" target="_blank" class="text-blue-600 text-sm">${url}</a>
-                                </div>
-                                <button class="delete-website text-red-500 hover:text-red-700" data-index="${websites.length - 1}">
-                                    <i class="fa fa-trash"></i>
-                                </button>
-                            </div>
-                        `;
-                        
-                        // 清空输入框
-                        document.getElementById('website-name').value = '';
-                        document.getElementById('website-url').value = '';
+                m.querySelector('#a').onclick = async () => {
+                    const n = m.querySelector('#n').value;
+                    const u = m.querySelector('#u').value;
+                    if (n&&u) {
+                        globalData.websites.push({name:n, url:u});
+                        await saveCloudData();
+                        m.remove();
                     }
+                };
+            };
+
+            // 悄悄话
+            document.getElementById('secret-chat').onclick = () => {
+                const m = document.createElement('div');
+                m.className = 'fixed inset-0 z-50 flex items-center justify-center';
+                m.innerHTML = `<div class="absolute inset-0 bg-black/70" onclick="m.remove()"></div>
+                    <div class="relative z-10 bg-white p-6 rounded-xl w-full max-w-md h-[70vh] flex flex-col">
+                        <h3 class="text-xl font-bold mb-2">悄悄话</h3>
+                        <div class="flex-1 overflow-y-auto bg-gray-50 p-3 rounded mb-3"></div>
+                        <input id="msg" class="border p-2 rounded flex-1 mr-2" placeholder="输入消息">
+                        <button id="send" class="bg-blue-600 text-white px-4 py-2 rounded">发送</button>
+                    </div>`;
+                document.body.appendChild(m);
+                const box = m.querySelector('.flex-1');
+                globalData.messages.forEach(txt => {
+                    const d = document.createElement('div');
+                    d.className = 'p-2 rounded bg-blue-100 my-1 w-fit';
+                    d.textContent = txt;
+                    box.appendChild(d);
                 });
-                
-                // 删除网站
-                modal.querySelectorAll('.delete-website').forEach(btn => {
-                    btn.addEventListener('click', function() {
-                        const index = parseInt(this.dataset.index);
-                        websites.splice(index, 1);
-                        saveWebsites();
-                        this.closest('div').remove();
-                    });
-                });
-            });
-            
-            // 2. 悄悄话专区
-            const messages = JSON.parse(localStorage.getItem('messages')) || [];
-            
-            function saveMessages() {
-                localStorage.setItem('messages', JSON.stringify(messages));
-            }
-            
-            document.getElementById('secret-chat').addEventListener('click', function() {
-                const modal = document.createElement('div');
-                modal.className = 'fixed inset-0 flex items-center justify-center z-50';
-                modal.innerHTML = `
-                    <div class="absolute inset-0 bg-black/70" id="chat-modal-overlay"></div>
-                    <div class="relative z-10 bg-white rounded-xl shadow-xl p-6 max-w-2xl w-full max-h-[80vh] flex flex-col">
-                        <div class="flex justify-between items-center mb-4">
-                            <h3 class="text-2xl font-bold">悄悄话专区</h3>
-                            <button id="close-chat-modal" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
-                        </div>
-                        <div id="chat-messages" class="flex-1 overflow-y-auto mb-4 space-y-4 p-4 bg-gray-50 rounded-lg">
-                            ${messages.map((msg, index) => `
-                                <div class="flex ${index % 2 === 0 ? 'justify-start' : 'justify-end'}">
-                                    <div class="max-w-[70%] p-3 rounded-lg ${index % 2 === 0 ? 'bg-blue-100' : 'bg-green-100'}">
-                                        ${msg}
-                                    </div>
-                                </div>
-                            `).join('')}
-                        </div>
-                        <div class="flex">
-                            <input type="text" id="chat-input" placeholder="输入消息..." class="flex-1 px-4 py-2 border border-gray-300 rounded-l-lg">
-                            <button id="send-message" class="bg-blue-600 text-white px-4 py-2 rounded-r-lg hover:bg-blue-700">发送</button>
-                        </div>
-                    </div>
-                `;
-                
-                document.body.appendChild(modal);
-                
-                // 关闭弹窗
-                document.getElementById('chat-modal-overlay').addEventListener('click', function() {
-                    modal.remove();
-                });
-                
-                document.getElementById('close-chat-modal').addEventListener('click', function() {
-                    modal.remove();
-                });
-                
-                // 发送消息
-                document.getElementById('send-message').addEventListener('click', function() {
-                    const input = document.getElementById('chat-input');
-                    const message = input.value.trim();
-                    
-                    if (message) {
-                        messages.push(message);
-                        saveMessages();
-                        
-                        const chatMessages = document.getElementById('chat-messages');
-                        const isEven = messages.length % 2 === 0;
-                        
-                        chatMessages.innerHTML += `
-                            <div class="flex ${isEven ? 'justify-end' : 'justify-start'}">
-                                <div class="max-w-[70%] p-3 rounded-lg ${isEven ? 'bg-green-100' : 'bg-blue-100'}">
-                                    ${message}
-                                </div>
-                            </div>
-                        `;
-                        
-                        // 滚动到底部
-                        chatMessages.scrollTop = chatMessages.scrollHeight;
-                        
-                        // 清空输入框
-                        input.value = '';
+                m.querySelector('#send').onclick = async () => {
+                    const t = m.querySelector('#msg').value.trim();
+                    if (t) {
+                        globalData.messages.push(t);
+                        await saveCloudData();
+                        const d = document.createElement('div');
+                        d.className = 'p-2 rounded bg-blue-100 my-1 w-fit';
+                        d.textContent = t;
+                        box.appendChild(d);
+                        m.querySelector('#msg').value = '';
                     }
-                });
-                
-                // 回车键发送
-                document.getElementById('chat-input').addEventListener('keypress', function(e) {
-                    if (e.key === 'Enter') {
-                        document.getElementById('send-message').click();
-                    }
-                });
-                
-                // 滚动到底部
-                const chatMessages = document.getElementById('chat-messages');
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-            });
-            
-            // 3. 实验区
-            document.getElementById('experiment-area').addEventListener('click', function() {
-                const modal = document.createElement('div');
-                modal.className = 'fixed inset-0 flex items-center justify-center z-50';
-                modal.innerHTML = `
-                    <div class="absolute inset-0 bg-black/70" id="experiment-modal-overlay"></div>
-                    <div class="relative z-10 bg-white rounded-xl shadow-xl p-8 max-w-md w-full text-center">
-                        <h3 class="text-3xl font-bold mb-4">实验区</h3>
-                        <p class="text-lg text-gray-600 mb-8">该功能暂未开放，请返回</p>
-                        <button id="close-experiment-modal" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors">
-                            返回
-                        </button>
-                    </div>
-                `;
-                
-                document.body.appendChild(modal);
-                
-                // 关闭弹窗
-                document.getElementById('experiment-modal-overlay').addEventListener('click', function() {
-                    modal.remove();
-                });
-                
-                document.getElementById('close-experiment-modal').addEventListener('click', function() {
-                    modal.remove();
-                });
-            });
+                };
+            };
+
+            // 实验区
+            document.getElementById('experiment-area').onclick = () => alert('功能开发中');
         });
+    </script>
+</body>
+</html>
     </script>
 </body>
 </html>
