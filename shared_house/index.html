@@ -103,9 +103,32 @@
                 transform: scale(0.5) rotate(360deg);
             }
         }
+
+        /* Netlify 登录按钮样式 */
+        #netlify-login-btn {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            z-index: 9999;
+            background: linear-gradient(135deg, #0066CC 0%, #0080FF 100%);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 9999px;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        #netlify-login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 102, 204, 0.4);
+        }
     </style>
 </head>
 <body class="bg-gray-100">
+    <!-- Netlify 登录按钮（固定在右上角） -->
+    <button id="netlify-login-btn" class="hidden">Netlify 登录</button>
+
     <!-- 欢迎页面 -->
     <div id="welcome-page" class="min-h-screen flex flex-col">
         <div class="hero-section flex-1 flex flex-col md:flex-row">
@@ -342,6 +365,30 @@
         // 初始化Netlify Identity
         netlifyIdentity.init();
 
+        // 获取Netlify登录按钮元素
+        const netlifyLoginBtn = document.getElementById('netlify-login-btn');
+
+        // 绑定Netlify登录按钮事件
+        netlifyLoginBtn.addEventListener('click', () => {
+            netlifyIdentity.open();
+        });
+
+        // Netlify Identity登录状态监听
+        netlifyIdentity.on('login', (user) => {
+            console.log('Netlify登录成功', user);
+            netlifyLoginBtn.textContent = '已登录';
+            netlifyLoginBtn.classList.add('bg-green-600');
+            netlifyLoginBtn.classList.remove('bg-blue-600');
+            loadCloudData();
+        });
+
+        netlifyIdentity.on('logout', () => {
+            console.log('Netlify登出成功');
+            netlifyLoginBtn.textContent = 'Netlify 登录';
+            netlifyLoginBtn.classList.remove('bg-green-600');
+            netlifyLoginBtn.classList.add('bg-blue-600');
+        });
+
         // 从云端加载共享数据
         async function loadCloudData() {
             try {
@@ -361,7 +408,7 @@
         async function saveCloudData() {
             const user = netlifyIdentity.currentUser();
             if (!user) {
-                alert("请先登录！");
+                alert("请先点击右上角的Netlify登录按钮登录！");
                 return;
             }
 
@@ -542,6 +589,8 @@
                     loginPage.classList.add('hidden');
                     loginPage.classList.remove('flex');
                     successPage.classList.remove('hidden');
+                    // 显示Netlify登录按钮
+                    netlifyLoginBtn.classList.remove('hidden');
                     // 加载云端数据
                     loadCloudData();
                 } else {
@@ -555,6 +604,8 @@
             logoutBtn.addEventListener('click', function() {
                 successPage.classList.add('hidden');
                 welcomePage.classList.remove('hidden');
+                // 隐藏Netlify登录按钮
+                netlifyLoginBtn.classList.add('hidden');
                 // 退出Netlify Identity
                 netlifyIdentity.logout();
             });
@@ -1030,14 +1081,6 @@
                 document.getElementById('close-experiment-modal').addEventListener('click', function() {
                     modal.remove();
                 });
-            });
-
-            // Netlify Identity 登录成功回调
-            netlifyIdentity.on('login', (user) => {
-                console.log('登录成功', user);
-                welcomePage.classList.add('hidden');
-                successPage.classList.remove('hidden');
-                loadCloudData();
             });
 
             // 页面加载时加载云端数据
