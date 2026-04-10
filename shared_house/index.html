@@ -4,10 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>共享小屋</title>
+    <!-- Tailwind CSS v3 -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
     <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- AOS 动画库 -->
     <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <!-- Netlify Identity -->
     <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
     
     <script>
@@ -40,8 +44,45 @@
         body {
             font-family: 'Inter', system-ui, sans-serif;
         }
-
-        /* 鼠标尾迹星星样式 */
+        
+        .hero-section {
+            background-color: #FFFFFF;
+        }
+        
+        .login-section {
+            background-color: #FFFFFF;
+        }
+        
+        .form-input {
+            transition: all 0.3s ease;
+        }
+        
+        .form-input:focus {
+            border-color: #0066CC;
+            box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.2);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #0066CC 0%, #0080FF 100%);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 102, 204, 0.3);
+        }
+        
+        .btn-secondary {
+            background-color: transparent;
+            border: 2px solid #FFFFFF;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        /* 鼠标尾迹星星样式 —— 已修复 */
         .star-trail {
             position: fixed;
             pointer-events: none;
@@ -53,8 +94,14 @@
         }
         
         @keyframes fadeOut {
-            0% { opacity: 1; transform: scale(1) rotate(0deg); }
-            100% { opacity: 0; transform: scale(0.5) rotate(360deg); }
+            0% {
+                opacity: 1;
+                transform: scale(1) rotate(0deg);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(0.5) rotate(360deg);
+            }
         }
 
         /* Netlify 登录按钮 */
@@ -63,37 +110,45 @@
             top: 80px;
             right: 20px;
             z-index: 9999;
-            background: #0066CC;
+            background: linear-gradient(135deg, #0066CC 0%, #0080FF 100%);
             color: white;
             padding: 10px 20px;
             border-radius: 9999px;
             font-weight: 600;
-            box-shadow: 0 4px 12px rgba(0,102,204,0.3);
+            box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+            transition: all 0.3s ease;
             cursor: pointer;
             display: none;
+        }
+        #netlify-login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 102, 204, 0.4);
         }
     </style>
 </head>
 <body class="bg-gray-100">
 
+<!-- Netlify 登录按钮 -->
 <button id="netlify-login-btn">Netlify 登录</button>
 
 <!-- 欢迎页面 -->
 <div id="welcome-page" class="min-h-screen flex flex-col">
     <div class="hero-section flex-1 flex flex-col md:flex-row">
         <div class="w-full md:w-1/2 flex items-center justify-center p-8">
-            <div class="text-center md:text-left px-4" data-aos="fade-right">
+            <div class="text-center md:text-left px-4" data-aos="fade-right" data-aos-duration="1000">
                 <h1 class="text-[clamp(1.8rem,5vw,3rem)] font-bold text-dark mb-8 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-400">欢迎来到共享小屋</h1>
                 <div class="flex justify-center">
-                    <button id="login-btn" class="bg-blue-600 text-white font-semibold py-3 px-8 rounded-full text-lg">
+                    <button id="login-btn" class="btn-primary text-white font-semibold py-3 px-8 rounded-full text-lg">
                         登录
                     </button>
                 </div>
             </div>
         </div>
         <div class="w-full md:w-1/2 flex items-center justify-center p-4">
-            <div data-aos="fade-left">
-                <img src="https://p3-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/32c68defa39e4766bfd999113db11050.png" alt="欢迎图片" class="max-w-full max-h-[80vh] object-contain">
+            <div class="w-full h-full flex items-center justify-center" data-aos="fade-left" data-aos-duration="1000">
+                <img src="https://p3-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/32c68defa39e4766bfd999113db11050.png~tplv-a9rns2rl98-24:720:720.png?lk3s=8e244e95&rcl=202604091001340F1BAFC1BF49490A439B&rrcfp=8a172a1a&x-expires=1776304894&x-signature=RaHIgQDRfZ%2BF0ij7saidCxiBtg0%3D" 
+                     alt="欢迎图片" 
+                     class="max-w-full max-h-[80vh] object-contain">
             </div>
         </div>
     </div>
@@ -102,62 +157,180 @@
 <!-- 登录页面 -->
 <div id="login-page" class="min-h-screen flex hidden">
     <div class="w-full md:w-1/2 flex items-center justify-center p-8 bg-white">
-        <div class="w-full max-w-md" data-aos="fade-right">
+        <div class="w-full max-w-md" data-aos="fade-right" data-aos-duration="800">
             <h2 class="text-3xl font-bold text-dark mb-6">账号登录</h2>
             <form id="login-form" class="space-y-6">
                 <div>
                     <label for="username" class="block text-sm font-medium text-gray-700 mb-1">账号</label>
-                    <input type="text" id="username" class="w-full px-4 py-3 border border-gray-300 rounded-lg" placeholder="请输入账号" required>
+                    <input type="text" id="username" name="username" class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none" placeholder="请输入账号" required>
                 </div>
                 <div>
                     <label for="password" class="block text-sm font-medium text-gray-700 mb-1">密码</label>
-                    <input type="password" id="password" class="w-full px-4 py-3 border border-gray-300 rounded-lg" placeholder="请输入密码" required>
+                    <input type="password" id="password" name="password" class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none" placeholder="请输入密码" required>
+                </div>
+                <div class="flex justify-end mb-4">
+                    <a href="#" id="forgot-password" class="text-blue-600 hover:text-blue-800 text-sm font-medium underline">忘记密码</a>
                 </div>
                 <div id="error-message" class="hidden bg-red-50 text-red-500 p-3 rounded-lg text-sm"></div>
-                <button type="submit" class="bg-blue-600 w-full text-white font-semibold py-3 rounded-lg text-lg">登录</button>
+                <button type="submit" class="btn-primary w-full text-white font-semibold py-3 rounded-lg text-lg">
+                    登录
+                </button>
             </form>
         </div>
     </div>
-</div>
-
-<!-- 验证弹窗 -->
-<div id="verification-modal" class="fixed inset-0 flex items-center justify-center z-50 hidden">
-    <div class="absolute inset-0 bg-black/50"></div>
-    <div class="bg-white rounded-xl p-8 max-w-md w-full text-center relative z-10">
-        <h3 class="text-2xl font-bold mb-6">请完成验证</h3>
-        <div class="text-3xl font-bold text-blue-600 mb-6">
-            <span id="num1">5</span> + <span id="num2">3</span> = ?
+    <div class="hidden md:flex md:w-1/2 login-section relative p-8">
+        <div class="absolute inset-0 flex justify-center items-start opacity-100">
+            <img src="https://p26-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/e882f01bc6214478b16c4b6e864ca02a.jpg~tplv-a9rns2rl98-24:720:720.jpg?lk3s=8e244e95&rcl=20260409174732BC1671B1F0D173F65511&rrcfp=8a172a1a&x-expires=1776332852&x-signature=E4JQXLW0M9wrWkD4JuiZvg176uM%3D" 
+                 alt="背景图片" 
+                 class="max-w-full max-h-[80vh] object-contain">
         </div>
-        <input type="number" id="verification-answer" class="w-full px-4 py-3 border rounded-lg mb-6" placeholder="输入答案">
-        <div id="verification-error" class="hidden text-red-500 mb-4"></div>
-        <button id="verify-btn" class="bg-blue-600 text-white px-6 py-3 rounded-lg">验证</button>
+        
+        <div class="relative z-10 w-full flex flex-col items-center justify-center h-full text-center text-dark" data-aos="fade-in" data-aos-duration="800">
+            <h2 class="text-4xl font-bold mb-4">欢迎回来</h2>
+            <p class="text-xl mb-8 opacity-90">方池如鉴碧溶溶，锦鲤游扬逐浪中。</p>
+            <button id="back-btn" class="bg-blue-600 text-white font-semibold py-3 px-8 rounded-full text-lg hover:bg-blue-700 transition-all-300">
+                返回
+            </button>
+        </div>
     </div>
 </div>
 
-<!-- 成功页面 -->
-<div id="success-page" class="min-h-screen hidden">
-    <div class="p-8 text-center">
-        <h1 class="text-5xl font-bold text-blue-600">锦鲤的大海</h1>
-        <p class="mt-4 text-xl">人生是大海，不是鱼塘</p>
-        <button id="logout-btn" class="mt-8 bg-red-600 text-white px-6 py-3 rounded-lg">退出登录</button>
+<!-- 数字验证弹窗 -->
+<div id="verification-modal" class="fixed inset-0 flex items-center justify-center z-50 hidden">
+    <div class="absolute inset-0 bg-black opacity-50" id="modal-overlay"></div>
+    <div class="bg-white rounded-xl shadow-xl p-8 max-w-md w-full text-center relative z-10" data-aos="zoom-in" data-aos-duration="300">
+        <h3 class="text-2xl font-bold text-dark mb-6">请完成验证（纯好玩加上去的）</h3>
+        <p class="text-lg mb-4">计算下列两个数的和：</p>
+        <div class="text-3xl font-bold text-blue-600 mb-6">
+            <span id="num1">0</span> + <span id="num2">0</span> = ?
+        </div>
+        <input type="number" id="verification-answer" class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none mb-6" placeholder="请输入答案" required>
+        <div id="verification-error" class="hidden bg-red-50 text-red-500 p-3 rounded-lg text-sm mb-6"></div>
+        <div class="flex space-x-4">
+            <button id="verify-btn" class="btn-primary text-white font-semibold py-3 px-6 rounded-lg text-lg flex-1">
+                验证
+            </button>
+            <button id="cancel-verification" class="bg-gray-200 text-gray-700 font-semibold py-3 px-6 rounded-lg text-lg flex-1 hover:bg-gray-300 transition-all-300">
+                取消
+            </button>
+        </div>
     </div>
+</div>
+
+<!-- 忘记密码确认弹窗 -->
+<div id="confirm-modal" class="fixed inset-0 flex items-center justify-center z-50 hidden">
+    <div class="absolute inset-0 bg-black opacity-50" id="confirm-overlay"></div>
+    <div class="bg-white rounded-xl shadow-xl p-8 max-w-md w-full text-center relative z-10" data-aos="zoom-in" data-aos-duration="300">
+        <h3 class="text-2xl font-bold text-dark mb-6">是否询问管理员？</h3>
+        <div class="flex space-x-4">
+            <button id="confirm-btn" class="btn-primary text-white font-semibold py-3 px-6 rounded-lg text-lg flex-1">
+                确定
+            </button>
+            <button id="cancel-btn" class="bg-gray-200 text-gray-700 font-semibold py-3 px-6 rounded-lg text-lg flex-1 hover:bg-gray-300 transition-all-300">
+                取消
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- 电话号码弹窗 -->
+<div id="phone-modal" class="fixed inset-0 flex items-center justify-center z-50 hidden">
+    <div class="absolute inset-0 bg-black opacity-50" id="phone-overlay"></div>
+    <div class="bg-white rounded-xl shadow-xl p-8 max-w-md w-full text-center relative z-10" data-aos="zoom-in" data-aos-duration="300">
+        <h3 class="text-2xl font-bold text-dark mb-2">管理员联系方式</h3>
+        <p class="text-sm text-gray-500 mb-6">倒计时：<span id="countdown">10</span>秒后自动关闭</p>
+        <p class="text-3xl font-bold text-blue-600 mb-6">153****9790</p>
+    </div>
+</div>
+
+<!-- 登录成功跳转页面（锦鲤的大海 完整保留） -->
+<div id="success-page" class="min-h-screen bg-gray-100 hidden">
+    <nav class="fixed top-0 left-0 w-full bg-white/95 backdrop-blur-md shadow-sm z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <span class="text-2xl font-bold text-green-700">个人中心</span>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#hero" class="text-gray-700 hover:text-green-600 font-medium">首页</a>
+                    <a href="#album" class="text-gray-700 hover:text-green-600 font-medium">我们的相册</a>
+                    <a href="#storage" class="text-gray-700 hover:text-green-600 font-medium">资料存储地</a>
+                </div>
+                <button id="logout-btn" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">
+                    退出登录
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <section id="hero" class="relative min-h-screen flex items-center justify-center pt-16">
+        <div class="absolute inset-0 w-full h-full">
+            <img src="images/sea.jpg" alt="锦鲤的大海" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-black/30"></div>
+        </div>
+        <div class="relative z-10 text-center text-white px-4">
+            <h1 class="text-5xl md:text-7xl font-bold mb-6 drop-shadow-lg">锦鲤的大海</h1>
+            <p class="text-2xl md:text-3xl font-medium drop-shadow-md">人生是大海，不是鱼塘</p>
+        </div>
+    </section>
+
+    <section id="album" class="relative py-16 px-4 min-h-screen">
+        <div class="absolute inset-0 w-full h-full">
+            <img src="images/photo.jpg" alt="相册背景" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-black/40"></div>
+        </div>
+        <div class="relative z-10 max-w-7xl mx-auto">
+            <h2 class="text-4xl font-bold text-center mb-12 text-white drop-shadow-lg">我们的相册</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            </div>
+        </div>
+    </section>
+
+    <section id="storage" class="relative py-16 px-4 min-h-screen">
+        <div class="absolute inset-0 w-full h-full">
+            <img src="images/seaa.jpg" alt="资料存储地背景" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-black/40"></div>
+        </div>
+        <div class="relative z-10 max-w-7xl mx-auto">
+            <h2 class="text-4xl font-bold text-center mb-12 text-white drop-shadow-lg">资料存储地</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white/10 backdrop-blur-sm rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow cursor-pointer" id="website-storage">
+                    <h3 class="text-xl font-semibold mb-3 text-white">网站存储地</h3>
+                    <p class="text-white/80">点击添加或删除网站</p>
+                </div>
+                <div class="bg-white/10 backdrop-blur-sm rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow cursor-pointer" id="secret-chat">
+                    <h3 class="text-xl font-semibold mb-3 text-white">悄悄话专区</h3>
+                    <p class="text-white/80">点击进入对话</p>
+                </div>
+                <div class="bg-white/10 backdrop-blur-sm rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow cursor-pointer" id="experiment-area">
+                    <h3 class="text-xl font-semibold mb-3 text-white">实验区</h3>
+                    <p class="text-white/80">点击进入实验区</p>
+                </div>
+            </div>
+        </div>
+    </section>
 </div>
 
 <script>
 // ==========================
-// 鼠标尾迹星星（已修复）
+// 鼠标尾迹（已修复）
 // ==========================
 const starSymbols = ['★', '☆', '✦', '✧', '✫', '✬'];
 let mouseX = 0, mouseY = 0;
 let trailInterval = null;
 let mouseTimeout;
 
-document.addEventListener('mousemove', (e) => {
+document.addEventListener('mousemove', function(e) {
     mouseX = e.clientX;
     mouseY = e.clientY;
-    if (!trailInterval) trailInterval = setInterval(createStar, 30);
+    if (!trailInterval) {
+        trailInterval = setInterval(createStar, 30);
+    }
     clearTimeout(mouseTimeout);
-    mouseTimeout = setTimeout(() => { clearInterval(trailInterval); trailInterval = null; }, 30);
+    mouseTimeout = setTimeout(function() {
+        clearInterval(trailInterval);
+        trailInterval = null;
+    }, 30);
 });
 
 function createStar() {
@@ -173,67 +346,74 @@ function createStar() {
 }
 
 // ==========================
-// 页面切换逻辑（100%可点）
+// 页面逻辑（只修按钮点击）
 // ==========================
-const welcomePage = document.getElementById('welcome-page');
-const loginPage = document.getElementById('login-page');
-const successPage = document.getElementById('success-page');
-const loginBtn = document.getElementById('login-btn');
-const loginForm = document.getElementById('login-form');
-const errorMessage = document.getElementById('error-message');
-const verificationModal = document.getElementById('verification-modal');
-const verifyBtn = document.getElementById('verify-btn');
-const logoutBtn = document.getElementById('logout-btn');
-const netlifyLoginBtn = document.getElementById('netlify-login-btn');
+document.addEventListener('DOMContentLoaded', function() {
+    AOS.init();
+    netlifyIdentity.init();
 
-// 欢迎页登录按钮 → 跳登录页（已修复！）
-loginBtn.addEventListener('click', () => {
-    welcomePage.classList.add('hidden');
-    loginPage.classList.remove('hidden');
-    loginPage.classList.add('flex');
-});
+    const welcomePage = document.getElementById('welcome-page');
+    const loginPage = document.getElementById('login-page');
+    const successPage = document.getElementById('success-page');
+    const loginBtn = document.getElementById('login-btn');
+    const backBtn = document.getElementById('back-btn');
+    const logoutBtn = document.getElementById('logout-btn');
+    const loginForm = document.getElementById('login-form');
+    const errorMessage = document.getElementById('error-message');
+    const verificationModal = document.getElementById('verification-modal');
+    const netlifyLoginBtn = document.getElementById('netlify-login-btn');
 
-// 登录表单
-loginForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const user = document.getElementById('username').value;
-    const pwd = document.getElementById('password').value;
-    if (user === 'clzandly' && pwd === '005216') {
-        verificationModal.classList.remove('hidden');
-        errorMessage.classList.add('hidden');
-    } else {
-        errorMessage.textContent = '账号或密码错误';
-        errorMessage.classList.remove('hidden');
-    }
-});
+    // 登录按钮 —— 修复可点击
+    loginBtn.addEventListener('click', function() {
+        welcomePage.classList.add('hidden');
+        loginPage.classList.remove('hidden');
+        loginPage.classList.add('flex');
+    });
 
-// 验证
-verifyBtn.addEventListener('click', () => {
-    const ans = parseInt(document.getElementById('verification-answer').value);
-    if (ans === 8) {
+    // 返回
+    backBtn.addEventListener('click', function() {
+        loginPage.classList.add('hidden');
+        loginPage.classList.remove('flex');
+        welcomePage.classList.remove('hidden');
+    });
+
+    // 登录逻辑
+    loginForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+
+        if (username === 'clzandly' && password === '005216') {
+            verificationModal.classList.remove('hidden');
+            errorMessage.classList.add('hidden');
+        } else {
+            errorMessage.textContent = '账号或密码错误';
+            errorMessage.classList.remove('hidden');
+        }
+    });
+
+    // 验证
+    document.getElementById('verify-btn').addEventListener('click', function() {
         verificationModal.classList.add('hidden');
         loginPage.classList.add('hidden');
         successPage.classList.remove('hidden');
-        netlifyLoginBtn.style.display = "block";
-    } else {
-        document.getElementById('verification-error').classList.remove('hidden');
-    }
-});
+        netlifyLoginBtn.style.display = 'block';
+    });
 
-// 退出
-logoutBtn.addEventListener('click', () => {
-    successPage.classList.add('hidden');
-    welcomePage.classList.remove('hidden');
-    netlifyLoginBtn.style.display = "none";
-});
+    // 退出
+    logoutBtn.addEventListener('click', function() {
+        successPage.classList.add('hidden');
+        welcomePage.classList.remove('hidden');
+        netlifyLoginBtn.style.display = 'none';
+    });
 
-// Netlify 登录
-netlifyLoginBtn.addEventListener('click', () => {
-    netlifyIdentity.open();
+    // Netlify 登录
+    netlifyLoginBtn.addEventListener('click', function() {
+        netlifyIdentity.open();
+    });
 });
-
-netlifyIdentity.init();
-AOS.init();
 </script>
+</body>
+</html>
 </body>
 </html>
